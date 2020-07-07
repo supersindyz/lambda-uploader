@@ -82,7 +82,7 @@ def _execute(args):
             extra_files = args.extra_files
         pkg = package.build_package(pth, requirements,
                                     venv, cfg.ignore, extra_files,
-                                    pyexec=cfg.runtime)
+                                    zip_ignore=cfg.zip_ignore, pyexec=cfg.runtime)
 
     if not args.no_clean:
         pkg.clean_workspace()

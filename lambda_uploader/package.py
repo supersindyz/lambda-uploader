@@ -38,7 +38,7 @@ ZIPFILE_NAME = 'lambda_function.zip'
 
 def build_package(path, requires, virtualenv=None, ignore=None,
                   extra_files=None, zipfile_name=ZIPFILE_NAME,
-                  pyexec=None):
+                  zip_ignore=None, pyexec=None):
     '''Builds the zip file and creates the package with it'''
     pkg = Package(path, zipfile_name, pyexec)
 
@@ -48,7 +48,7 @@ def build_package(path, requires, virtualenv=None, ignore=None,
     if virtualenv is not None:
         pkg.virtualenv(virtualenv)
     pkg.requirements(requires)
-    pkg.build(ignore)
+    pkg.build(ignore, zip_ignore)
 
     return pkg
 
@@ -73,11 +73,11 @@ class Package(object):
         self._requirements_file = os.path.join(self._path, "requirements.txt")
         self._extra_files = []
 
-    def build(self, ignore=None):
+    def build(self, ignore=None, zip_ignore=None):
         '''Calls all necessary methods to build the Lambda Package'''
         self._prepare_workspace()
         self.install_dependencies()
-        self.package(ignore)
+        self.package(ignore, zip_ignore)
 
     def clean_workspace(self):
         '''Clean up the temporary workspace if one exists'''
@@ -236,7 +236,7 @@ class Package(object):
             if prc.returncode is not 0:
                 raise Exception('pip returned unsuccessfully')
 
-    def package(self, ignore=None):
+    def package(self, ignore=None, zip_ignore=None):
         """
         Create a zip file of the lambda script and its dependencies.
 
@@ -291,14 +291,22 @@ class Package(object):
             else:
                 shutil.copy(p, package)
 
-        self._create_zip(package)
+        self._create_zip(package, zip_ignore)
 
-    def _create_zip(self, src):
+    def _create_zip(self, src, zip_ignore=None):
+        zip_ignore = zip_ignore or []
         LOG.info('Creating zipfile')
         zf = zipfile.ZipFile(self.zip_file, "w", zipfile.ZIP_DEFLATED)
         abs_src = os.path.abspath(src)
         for root, _, files in os.walk(src):
             for filename in files:
+                ignore = False
+                if zip_ignore:
+                    for ign in zip_ignore:
+                        if re.search(ign, filename):
+                            ignore = True
+                if ignore:
+                    continue
                 absname = os.path.abspath(os.path.join(root, filename))
                 arcname = absname[len(abs_src) + 1:]
                 LOG.debug('Zipping %s as %s'

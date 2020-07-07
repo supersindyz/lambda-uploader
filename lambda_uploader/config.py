@@ -33,7 +33,7 @@ REQUIRED_TRACING_MODES = ['Active', 'PassThrough']
 
 DEFAULT_PARAMS = {u'requirements': [], u'publish': False,
                   u'alias': None, u'alias_description': None,
-                  u'ignore': [], u'extra_files': [], u'vpc': None,
+                  u'ignore': [], u'zip_ignore': [], u'extra_files': [], u'vpc': None,
                   u's3_bucket': None, u's3_key': None, u'runtime': 'python2.7',
                   u'variables': {}, u'subscription': {}, u'tracing': {}}
 
