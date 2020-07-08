@@ -303,7 +303,7 @@ class Package(object):
                 ignore = False
                 if zip_ignore:
                     for ign in zip_ignore:
-                        if re.search(ign, filename):
+                        if re.search(ign, os.path.join(root, filename).replace(src + os.sep, '')):
                             ignore = True
                 if ignore:
                     continue
