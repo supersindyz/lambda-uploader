@@ -44,6 +44,16 @@ Example `lambda.json` file:
     "\\.git$",
     "/.*\\.pyc$"
   ],
+  "zip_ignore": [
+    "^pip(-[^/\\\\]+-info)?[/\\\\]",
+    "^setuptools(-[^/\\\\]+-info)?[/\\\\]",
+    "^pkg_resources(-[^/\\\\]+-info)?[/\\\\]",
+    "^easy_install.py$",
+    "\\.virtualenv$",
+    "^_virtualenv",
+    "\\.pyc$",
+    "__pycache__"
+  ],
   "timeout": 30,
   "memory": 512,
   "vpc": {
