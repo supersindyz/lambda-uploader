@@ -72,7 +72,7 @@ class Package(object):
         self._skip_virtualenv = False
         self._requirements = None
         self._pyexec = pyexec
-        self._requirements_file = os.path.join(self._path, requirements_file)
+        self._requirements_file = os.path.normpath(os.path.join(self._path, requirements_file))
         self._extra_files = []
         LOG.info('requirements_file:' + self._requirements_file)
 
