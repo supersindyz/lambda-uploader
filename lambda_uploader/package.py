@@ -34,13 +34,15 @@ except NameError:
 LOG = logging.getLogger(__name__)
 TEMP_WORKSPACE_NAME = ".lambda_uploader_temp"
 ZIPFILE_NAME = 'lambda_function.zip'
+REQUIREMENTS_FILE = 'requirements.txt'
 
 
 def build_package(path, requires, virtualenv=None, ignore=None,
                   extra_files=None, zipfile_name=ZIPFILE_NAME,
-                  zip_ignore=None, pyexec=None):
+                  zip_ignore=None, pyexec=None,
+                  requirements_file=None):
     '''Builds the zip file and creates the package with it'''
-    pkg = Package(path, zipfile_name, pyexec)
+    pkg = Package(path, zipfile_name, pyexec, requirements_file)
 
     if extra_files:
         for fil in extra_files:
@@ -53,14 +55,14 @@ def build_package(path, requires, virtualenv=None, ignore=None,
     return pkg
 
 
-def create_package(path, zipfile_name=ZIPFILE_NAME):
+def create_package(path, zipfile_name=ZIPFILE_NAME, requirements_file=REQUIREMENTS_FILE):
     '''Creates the package with already existing zip file'''
-    pkg = Package(path, zipfile_name)
+    pkg = Package(path, zipfile_name=ZIPFILE_NAME, requirements_file=REQUIREMENTS_FILE)
     return pkg
 
 
 class Package(object):
-    def __init__(self, path, zipfile_name=ZIPFILE_NAME, pyexec=None):
+    def __init__(self, path, zipfile_name=ZIPFILE_NAME, pyexec=None, requirements_file=REQUIREMENTS_FILE):
         self._path = path
         self._temp_workspace = os.path.join(path,
                                             TEMP_WORKSPACE_NAME)
@@ -70,7 +72,7 @@ class Package(object):
         self._skip_virtualenv = False
         self._requirements = None
         self._pyexec = pyexec
-        self._requirements_file = os.path.join(self._path, "requirements.txt")
+        self._requirements_file = os.path.join(self._path, requirements_file)
         self._extra_files = []
 
     def build(self, ignore=None, zip_ignore=None):

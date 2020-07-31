@@ -71,7 +71,7 @@ def _execute(args):
         venv = None
 
     if args.no_build:
-        pkg = package.create_package(pth)
+        pkg = package.create_package(pth, requirements_file=cfg.requirements_file)
     else:
         _print('Building Package')
         requirements = cfg.requirements
@@ -82,7 +82,8 @@ def _execute(args):
             extra_files = args.extra_files
         pkg = package.build_package(pth, requirements,
                                     venv, cfg.ignore, extra_files,
-                                    zip_ignore=cfg.zip_ignore, pyexec=cfg.runtime)
+                                    zip_ignore=cfg.zip_ignore, pyexec=cfg.runtime,
+                                    requirements_file=cfg.requirements_file)
 
     if not args.no_clean:
         pkg.clean_workspace()

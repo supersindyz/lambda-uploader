@@ -55,3 +55,4 @@ target/
 
 .lambda_uploader_temp
 *.zip
+.vscode/

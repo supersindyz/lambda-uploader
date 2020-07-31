@@ -39,6 +39,7 @@ Example `lambda.json` file:
   "handler": "function.lambda_handler",
   "role": "arn:aws:iam::00000000000:role/lambda_basic_execution",
   "requirements": ["pygithub"],
+  "requirements_file": "../requirements.txt",
   "ignore": [
     "circle\\.yml$",
     "\\.git$",
