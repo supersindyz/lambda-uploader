@@ -74,6 +74,7 @@ class Package(object):
         self._pyexec = pyexec
         self._requirements_file = os.path.join(self._path, requirements_file)
         self._extra_files = []
+        LOG.info('requirements_file:' + self._requirements_file)
 
     def build(self, ignore=None, zip_ignore=None):
         '''Calls all necessary methods to build the Lambda Package'''
